@@ -7,5 +7,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Michael Lewis <mike@lew42.com>",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "test42": "^1.0.0"
+  },
+  "dependencies": {
+    "base42": "^1.0.0",
+    "jquery": "^3.1.1",
+    "mod42": "^1.0.0",
+    "util42": "^1.0.0"
+  }
 }
