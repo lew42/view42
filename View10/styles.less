@@ -1,0 +1,128 @@
+.flex {
+	display: flex;
+}
+
+.expandable > .preview {
+	cursor: pointer;
+}
+
+.value-item {
+	display: flex;
+	.value {
+		margin-left: auto;
+	}
+}
+
+.icon-item {
+	display: flex;
+	.icon {
+		display: block;
+	}
+	&.expandable {
+		display: block;
+		.preview {
+			display: flex;
+		}
+	}
+}
+
+.wrapper {
+	padding: 0;
+	& > * {
+		padding: 1em;
+	}
+}
+
+.value {
+	&.num-content {
+		font-weight: bold;
+		color: blue;
+	}
+
+	&.str-content {
+		color: red;
+	}
+
+	&.bool-content {
+		font-weight: bold;
+		color: purple;
+	}
+}
+
+
+.item.wires {
+	margin-bottom: 1em;
+	&, * {
+		border: 1px solid black;
+	}
+
+	& > .value {
+		margin-left: auto;
+	}
+
+	&.expandable {
+	}
+}
+
+
+.expandable.item {
+	display: block;
+	& > .preview {
+		padding: 0;
+		display: flex;
+		& > * {
+			.pad-self()
+		}
+		& > .value {
+			margin-left: auto;
+		}
+	}
+	& > .content {
+		.item {
+			margin-bottom: 5px;
+		}
+	}
+}
+
+
+.pad-self, .pad-children > * {
+	padding: 1em;
+}
+
+
+.light .item, .item.light {
+	font-family: verdana;
+	font-size: 13px;
+	margin-bottom: 5px;
+	background: #fafafa;
+	> .icon {
+		padding-top: 7px;
+		padding-bottom: 5px;
+		background: #f0f0f0;
+	}
+	> .value {
+		background: #f0f0f0;
+		&.number {
+			color: green;
+		}
+		&.string {
+			color: blue;
+		}
+		&.boolean {
+			color: red;
+		}
+	}
+	> .label {
+		flex-grow: 1;
+	}
+	&.fn-item {
+		> .fn-arg {
+			font-style: italic;
+			color: #666;
+		}
+	}
+
+	&.pad-self, &.pad-children > * {
+		padding: 6px 10px;
+	}
+}

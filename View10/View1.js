@@ -1,8 +1,12 @@
 var Mod4 = require("mod42/Mod4");
-var is = require("is");
+var is = require("util42").is;
 var $ = require("jquery");
+var Route = require("route42");
 
-var ViewCaptor = require("view42/ViewCaptor");
+require("font-awesome-webpack");
+require("./styles.less");
+
+var ViewCaptor = require("../ViewCaptor");
 
 jQuery = $;
 
@@ -36,6 +40,8 @@ var View1 = module.exports = Enabler.extend({
 	captive: true,
 	captor: true,
 	autoRender: true,
+	cbs: [],
+	dcbs: [],
 	set: {
 		other: function(view, value){
 			if (value instanceof View1){
@@ -176,6 +182,32 @@ var View1 = module.exports = Enabler.extend({
 	filler: function(quantity){
 		this.attr("data-lorem", quantity);
 		return this;
+	},
+	set_route: function(route){
+		if (!route instanceof Route){
+			route = Route(route, {
+				view: this
+			});
+		}
+		this.route = route;
+	},
+	activate: function(){
+		if (!this.active){
+			this.active = true;
+
+			if (this.route)
+				this.route.activate();
+
+			this.execCBs.apply(this, arguments);
+		}
+	},
+	execCBs: function(){
+		for (var i = 0; i < this.cbs.length; i++){
+			this.cbs[i].apply(this, arguments);
+		}
+	},
+	then: function(cb){
+		this.cbs.push(cb);
 	}
 }).set({
 	extend: {
@@ -241,4 +273,55 @@ var Element;
 	View1[v] = Element;
 
 	View1.prototype[v] = Element;
+});
+
+
+var Icon = View1.Icon = View1.prototype.Icon = View1.extend({
+	name: "Icon",
+	tag: "i",
+	addClass: "icon fa fa-fw",
+	set: {
+		other: function(icon, value){
+			if (is.str(value))
+				icon.type(value);
+			else if (is.bool(value))
+				icon.enable(value);
+			return icon;
+		}
+	},
+	type: function(type){
+		this.enable();
+		this.$el.removeClass("fa-" + this._type).addClass("fa-" + type);
+		this._type = type;
+		return this;
+	}
+});
+
+Icon.prototype.set("circle").disable();
+
+
+var Flex = View1.Flex = View1.prototype.flex = View1.extend({
+	name: "Flex",
+	addClass: "flex"
+});
+
+var Item = View1.Item = View1.prototype.Item = Flex.extend({
+	name: "Item",
+	addClass: "pad-children",
+	set: {
+		other: function(item, value){
+			item.label.set(value);
+			return item;
+		}
+	},
+	icon: Icon.x(),
+	label: View1.x(function(){
+		this.append(this.parent.name);
+	}),
+	btn: Icon.x("beer"),
+	content: function(){
+		this.icon.render();
+		this.label.render();
+		this.btn.render();
+	}
 });
