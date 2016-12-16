@@ -1,4 +1,4 @@
-var View1 = require("view42/View1");
+var View1 = require("../View10");
 /*
 
 view({

@@ -1,7 +1,7 @@
 var View1 = require("./View1");
 var test = require("test42");
 var assert = test.assert;
-var is = require("is");
+var is = require("util42").is;
 
 var view = View1;
 

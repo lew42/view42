@@ -307,7 +307,7 @@ var Flex = View1.Flex = View1.prototype.flex = View1.extend({
 
 var Item = View1.Item = View1.prototype.Item = Flex.extend({
 	name: "Item",
-	addClass: "pad-children",
+	addClass: "item flex pad-children",
 	set: {
 		other: function(item, value){
 			item.label.set(value);
