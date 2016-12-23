@@ -1,7 +1,7 @@
 var Mod4 = require("mod42/Mod4");
 var is = require("util42").is;
 var $ = require("jquery");
-var Route = require("route42");
+// var Route = require("route42");
 
 require("font-awesome-webpack");
 require("./styles.less");
