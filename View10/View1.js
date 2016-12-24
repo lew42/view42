@@ -1,4 +1,5 @@
 var Mod4 = require("mod42/Mod4");
+var Mod2 = require("mod42/Mod2");
 var is = require("util42").is;
 var $ = require("jquery");
 // var Route = require("route42");
@@ -10,7 +11,7 @@ var ViewCaptor = require("../ViewCaptor");
 
 jQuery = $;
 
-var Enabler = Mod4.Sub.extend({
+var Enabler = Mod2.Sub.extend({
 	name: "Enabler",
 	enabled: true,
 	disabled: false,
@@ -45,6 +46,13 @@ var View1 = module.exports = Enabler.extend({
 	set: {
 		other: function(view, value){
 			if (value instanceof View1){
+						// wtf - now we can't do view(view("yo"), view("no"))
+						// setting a view should append it?
+						// but then how do we override?
+						// MyView({ subView: view() })
+						// unfortunately, I've unified view( x )
+						// and subView: x
+						// the only way around it might be to do some funny business with an [] wrapper
 				// let self get overridden 
 				return value;
 			} else {
@@ -183,14 +191,6 @@ var View1 = module.exports = Enabler.extend({
 		this.attr("data-lorem", quantity);
 		return this;
 	},
-	set_route: function(route){
-		if (!route instanceof Route){
-			route = Route(route, {
-				view: this
-			});
-		}
-		this.route = route;
-	},
 	activate: function(){
 		if (!this.active){
 			this.active = true;
@@ -240,12 +240,13 @@ var aliasFnToEl = function(fn){
 		var ret;
 		// if we .. append(view), we really need to append(view.$el)
 		if (view && view.$el)
-			ret = this.$el[fn].call(this.$el, o.$el);
+			ret = this.$el[fn].call(this.$el, view.$el);
 		// otherwise, just pass all arguments along, untouched
 		else 
 			ret = this.$el[fn].apply(this.$el, arguments);
 		
-		if (ret === this.$el){
+		// sometimes jQuery returns a new collection with the same items, so check the actual DOM element
+		if (ret && ret[0] === this.$el[0]){
 			// return the view, not the $el, for chaining
 			return this;
 		} else {
